@@ -1,3 +1,4 @@
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public class CardTest {
     void happyDelivery() {
         Configuration.holdBrowserOpen = true;
 
-        String planningDate = generateDate(4);
+        String planningDate = generateDate(3);
 
         open("http://localhost:9999");
         $("[data-test-id ='city'] input").val("Казань");
@@ -29,6 +30,7 @@ public class CardTest {
         $("[data-test-id = 'agreement']").click();
         $x("//span[@class='button__text']").click();
         $("[data-test-id = 'notification']").shouldBe(visible, Duration.ofSeconds(15));
+        $(".notification__content").shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate), Duration.ofSeconds(15)).shouldBe(visible);
     }
 
 }
